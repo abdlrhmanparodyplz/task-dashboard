@@ -57,7 +57,7 @@ const PRIORITY_OPTIONS: { label: string; value: PriorityFilter }[] = [
           [ngModel]="filter.priorityFilter()"
           (ngModelChange)="filter.priorityFilter.set($event)"
           placeholder="Priority"
-          class="priority-select"
+          class="priority-select "
         />
         <button type="button" class="new-task" (click)="dialog.openCreate()">
           <i class="pi pi-plus"></i>
@@ -119,8 +119,8 @@ const PRIORITY_OPTIONS: { label: string; value: PriorityFilter }[] = [
       border: none;
       background: var(--color-primary);
       color: #fff;
-      padding: 0.5rem 0.9rem;
-      border-radius: 6px;
+      padding: 0.8rem;
+      border-radius: 4px;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;

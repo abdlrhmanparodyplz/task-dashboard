@@ -15,15 +15,6 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
     <article class="task-card" [class.overdue]="overdue()">
       <header class="card-top">
         <app-priority-tag [priority]="task().priority" />
-        <button
-          type="button"
-          class="menu-btn"
-          aria-label="Task actions"
-          (click)="menu.toggle($event)"
-        >
-          <i class="pi pi-ellipsis-v"></i>
-        </button>
-        <p-menu #menu [popup]="true" [model]="menuItems()" appendTo="body" />
       </header>
 
       <h4 class="title">{{ task().title }}</h4>
@@ -43,7 +34,16 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
 
       <footer class="card-footer">
         <app-assignee-avatar [assignee]="task().assignee" />
+        <button
+          type="button"
+          class="menu-btn"
+          aria-label="Task actions"
+          (click)="menu.toggle($event)"
+        >
+          <i class="pi pi-ellipsis-v"></i>
+        </button>
       </footer>
+      <p-menu #menu [popup]="true" [model]="menuItems()" appendTo="body" />
     </article>
   `,
   styles: `
@@ -64,9 +64,6 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
 
     .card-top {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      position: relative;
     }
     .menu-btn {
       border: none;
@@ -120,6 +117,11 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
     .card-footer {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+    }
+
+    p-menu {
+      display: contents;
     }
   `,
 })
