@@ -236,6 +236,13 @@ export class TaskFormDialogComponent {
       if (!this.dialog.visible()) {
         return;
       }
+      // Editing an already-overdue task shouldn't force the user to also push its due
+      // date into the future just to save an unrelated change (e.g. fixing a typo).
+      this.form.controls.dueDate.setValidators(
+        task ? [Validators.required] : [Validators.required, notInPastValidator()],
+      );
+      this.form.controls.dueDate.updateValueAndValidity();
+
       if (task) {
         this.form.reset({
           title: task.title,
