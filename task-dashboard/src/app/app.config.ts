@@ -10,6 +10,7 @@ import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { ConfirmationService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { routes } from './app.routes';
@@ -31,6 +32,7 @@ export const appConfig: ApplicationConfig = {
         options: { darkModeSelector: false },
       },
     }),
+    ConfirmationService,
     provideStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideState(tasksFeature),

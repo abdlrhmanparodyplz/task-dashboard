@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
+import { ConfirmationService } from 'primeng/api';
 import type { MenuItem } from 'primeng/api';
 import type { Task } from '../../../core/models';
 import { AssigneeAvatarComponent } from '../../../shared/components/assignee-avatar/assignee-avatar.component';
@@ -127,6 +128,8 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
   `,
 })
 export class TaskCardComponent {
+  private readonly confirmationService = inject(ConfirmationService);
+
   readonly task = input.required<Task>();
 
   readonly edit = output<Task>();
@@ -141,7 +144,19 @@ export class TaskCardComponent {
       label: 'Delete',
       icon: 'pi pi-trash',
       styleClass: 'danger-item',
-      command: () => this.delete.emit(this.task()),
+      command: () => this.confirmDelete(),
     },
   ]);
+
+  private confirmDelete(): void {
+    const task = this.task();
+    this.confirmationService.confirm({
+      header: 'Delete task',
+      message: `Delete "${task.title}"? This can't be undone.`,
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonProps: { severity: 'danger', label: 'Delete' },
+      rejectButtonProps: { severity: 'secondary', label: 'Cancel', text: true },
+      accept: () => this.delete.emit(task),
+    });
+  }
 }

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TaskDialogService } from '../../core/services/task-dialog.service';
 import { TaskFilterService } from '../../core/services/task-filter.service';
 import { TaskFormDialogComponent } from '../../features/tasks/task-form-dialog/task-form-dialog.component';
@@ -9,7 +10,13 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, SidebarComponent, HeaderComponent, TaskFormDialogComponent],
+  imports: [
+    RouterOutlet,
+    SidebarComponent,
+    HeaderComponent,
+    TaskFormDialogComponent,
+    ConfirmDialogModule,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="shell">
@@ -33,6 +40,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     </div>
 
     <app-task-form-dialog />
+    <p-confirmdialog />
   `,
   styles: `
     .shell {
