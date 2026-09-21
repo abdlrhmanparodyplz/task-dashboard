@@ -87,9 +87,10 @@ interface Column {
       align-items: start;
     }
     .column {
-      background: var(--color-bg-page);
-      border-radius: var(--radius-card);
-      padding: 0.75rem;
+      background: var(--color-bg-card);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
       display: flex;
       flex-direction: column;
       gap: 0.6rem;

@@ -52,14 +52,15 @@ import { getDueDateLabel, isTaskOverdue } from '../../../shared/utils/task-date.
       flex-direction: column;
       gap: 0.4rem;
       padding: 0.85rem 0.9rem;
-      border-radius: var(--radius-card);
+      border-radius: 8px;
       background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
+      border-top: 1px solid var(--color-border);
       cursor: grab;
     }
     .task-card.overdue {
       background: var(--color-danger-bg);
-      border-color: color-mix(in srgb, var(--color-danger) 25%, var(--color-border));
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-danger);
     }
 
     .card-top {
