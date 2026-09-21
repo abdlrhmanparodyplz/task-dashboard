@@ -9,3 +9,6 @@ Thumbs.db
 
 # Logs
 npm-debug.log*
+
+# Claude Code session state (not project content)
+.claude/

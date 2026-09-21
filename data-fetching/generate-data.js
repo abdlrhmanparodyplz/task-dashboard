@@ -17,9 +17,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// Output goes straight into the Angular app so it can be imported by the
-// mock API interceptor (TS resolveJsonModule) and served as a static asset.
-const OUTPUT_DIR = path.join(__dirname, '..', 'task-dashboard', 'src', 'assets', 'data');
+// Output goes into the Angular app's `public/` folder (Angular 20's static
+// assets convention) so the mock API layer can fetch it like a real backend.
+const OUTPUT_DIR = path.join(__dirname, '..', 'task-dashboard', 'public', 'data');
 
 /**
  * Add days to a date
