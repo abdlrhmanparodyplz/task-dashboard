@@ -19,6 +19,11 @@ function shouldSimulateTransientFailure(key: string): boolean {
   return true;
 }
 
+/** Test-only: clears the one-time-failure tracking so specs can run in isolation. */
+export function resetMockApiAttempts(): void {
+  attemptedOnce.clear();
+}
+
 /**
  * Serves `/api/tasks` and `/api/statistics` from an in-memory store seeded
  * from the generated mock JSON, standing in for a real backend so the rest
