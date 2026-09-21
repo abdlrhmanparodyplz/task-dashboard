@@ -35,6 +35,10 @@ describe('AnalyticsPageComponent', () => {
     fixture.detectChanges();
   }
 
+  // See TaskBoardComponent's spec for why this matters: overriding a shared
+  // selector export leaks across spec files in the same Karma run otherwise.
+  afterEach(() => store?.resetSelectors());
+
   it('dispatches loadTasks on init', () => {
     setup([]);
     expect(store.dispatch).toHaveBeenCalledWith(TasksActions.loadTasks());

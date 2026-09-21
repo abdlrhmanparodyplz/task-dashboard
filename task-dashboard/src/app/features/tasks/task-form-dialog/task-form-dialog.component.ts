@@ -10,6 +10,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { MOCK_USERS } from '../../../core/data/mock-users';
 import type { Task, TaskPriority, TaskStatus } from '../../../core/models';
 import { TaskDialogService } from '../../../core/services/task-dialog.service';
+import { formatLocalDate, parseLocalDate } from '../../../shared/utils/task-date.util';
 import { notBlankValidator, notInPastValidator } from '../../../shared/validators/task-validators';
 import { TasksActions } from '../../../state/tasks';
 
@@ -249,7 +250,7 @@ export class TaskFormDialogComponent {
           description: task.description,
           priority: task.priority,
           status: task.status,
-          dueDate: new Date(task.dueDate),
+          dueDate: parseLocalDate(task.dueDate),
           assigneeId: task.assignee.id,
           tag: task.tags[0] ?? '',
         });
@@ -275,7 +276,7 @@ export class TaskFormDialogComponent {
 
     const value = this.form.getRawValue();
     const assignee = MOCK_USERS.find((user) => user.id === value.assigneeId)!;
-    const dueDate = value.dueDate!.toISOString().split('T')[0];
+    const dueDate = formatLocalDate(value.dueDate!);
     const editing = this.dialog.editingTask();
 
     if (editing) {

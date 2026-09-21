@@ -1,5 +1,5 @@
 import type { Task } from '../../core/models';
-import { getDueDateLabel, isTaskOverdue } from './task-date.util';
+import { formatLocalDate, getDueDateLabel, isTaskOverdue } from './task-date.util';
 
 function makeTask(overrides: Partial<Task> = {}): Task {
   return {
@@ -8,7 +8,7 @@ function makeTask(overrides: Partial<Task> = {}): Task {
     description: 'Description',
     status: 'todo',
     priority: 'medium',
-    dueDate: new Date().toISOString().split('T')[0],
+    dueDate: formatLocalDate(new Date()),
     assignee: { id: 'u1', name: 'John Doe', avatar: 'JD', email: 'john@doe.com' },
     tags: [],
     createdAt: new Date().toISOString(),
@@ -17,10 +17,13 @@ function makeTask(overrides: Partial<Task> = {}): Task {
   };
 }
 
+// Uses local calendar fields (not toISOString, which is UTC and can land on a
+// different calendar day depending on the runner's timezone offset) so these
+// fixtures always mean the same day that isTaskOverdue/getDueDateLabel see.
 function daysFromNow(days: number): string {
   const date = new Date();
   date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0];
+  return formatLocalDate(date);
 }
 
 describe('isTaskOverdue', () => {

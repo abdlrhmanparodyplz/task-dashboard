@@ -4,6 +4,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MOCK_USERS } from '../../../core/data/mock-users';
 import type { Task } from '../../../core/models';
 import { TaskDialogService } from '../../../core/services/task-dialog.service';
+import { formatLocalDate } from '../../../shared/utils/task-date.util';
 import { TasksActions } from '../../../state/tasks';
 import { TaskFormDialogComponent } from './task-form-dialog.component';
 
@@ -66,7 +67,7 @@ describe('TaskFormDialogComponent', () => {
     expect(form().value.status).toBe('in_progress');
     expect(form().value.assigneeId).toBe(task.assignee.id);
     expect(form().value.tag).toBe('Backend');
-    expect((form().value.dueDate as Date).toISOString().split('T')[0]).toBe('2026-06-15');
+    expect(formatLocalDate(form().value.dueDate as Date)).toBe('2026-06-15');
   });
 
   it('marks all fields as touched and does not dispatch when submitting an invalid form', () => {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import type { Task } from '../../../core/models';
 import { selectAllTasks } from '../../../state/tasks';
 import { RecentActivityComponent } from './recent-activity.component';
@@ -22,15 +22,22 @@ function makeTask(overrides: Partial<Task> = {}): Task {
 
 describe('RecentActivityComponent', () => {
   let fixture: ComponentFixture<RecentActivityComponent>;
+  let store: MockStore;
 
   function setup(tasks: Task[]) {
     TestBed.configureTestingModule({
       imports: [RecentActivityComponent],
       providers: [provideMockStore({ selectors: [{ selector: selectAllTasks, value: tasks }] })],
     });
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(RecentActivityComponent);
     fixture.detectChanges();
   }
+
+  // provideMockStore's `selectors` option overrides the *shared, module-level*
+  // selector functions in place — without resetting, that override leaks into
+  // every other spec file in the same Karma run that imports the same selector.
+  afterEach(() => store?.resetSelectors());
 
   it('shows an empty state when there are no tasks', () => {
     setup([]);

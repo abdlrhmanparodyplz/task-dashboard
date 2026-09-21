@@ -1,4 +1,5 @@
 import type { Task } from '../../core/models';
+import { formatLocalDate } from '../../shared/utils/task-date.util';
 import { TasksActions } from './tasks.actions';
 import { tasksAdapter, tasksReducer } from './tasks.reducer';
 import type { TasksState } from './tasks.reducer';
@@ -26,10 +27,12 @@ function makeTask(overrides: Partial<Task> = {}): Task {
   };
 }
 
+// Local calendar fields, not toISOString (UTC) — keeps fixtures aligned with
+// the selectors' notion of "today" regardless of the runner's timezone.
 function daysFromNow(days: number): string {
   const date = new Date();
   date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0];
+  return formatLocalDate(date);
 }
 
 function stateWith(tasks: Task[]): { tasks: TasksState } {

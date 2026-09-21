@@ -2,6 +2,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationService } from 'primeng/api';
 import type { Task } from '../../../core/models';
+import { formatLocalDate } from '../../../shared/utils/task-date.util';
 import { TaskCardComponent } from './task-card.component';
 
 function makeTask(overrides: Partial<Task> = {}): Task {
@@ -44,10 +45,7 @@ describe('TaskCardComponent', () => {
   it('does not apply the overdue class for a task due in the future', () => {
     const future = new Date();
     future.setDate(future.getDate() + 5);
-    fixture.componentRef.setInput(
-      'task',
-      makeTask({ dueDate: future.toISOString().split('T')[0] }),
-    );
+    fixture.componentRef.setInput('task', makeTask({ dueDate: formatLocalDate(future) }));
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.task-card').classList.contains('overdue')).toBe(
       false,

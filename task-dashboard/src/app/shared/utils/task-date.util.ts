@@ -6,6 +6,25 @@ function startOfDay(date: Date): Date {
   return copy;
 }
 
+/**
+ * Parses a date-only string ("YYYY-MM-DD") as local midnight rather than UTC
+ * midnight. `new Date("2026-09-22")` is UTC per the ISO 8601 spec, which
+ * silently shifts the calendar day by one for any timezone behind UTC — a
+ * task due "today" would otherwise read as due yesterday for those users.
+ */
+export function parseLocalDate(dateOnly: string): Date {
+  const [year, month, day] = dateOnly.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+/** The inverse of {@link parseLocalDate} — formats a Date using its local calendar fields. */
+export function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function isTaskOverdue(task: Task): boolean {
   if (task.status === 'done') {
     return false;
@@ -13,7 +32,7 @@ export function isTaskOverdue(task: Task): boolean {
   if (task.isOverdue) {
     return true;
   }
-  return startOfDay(new Date(task.dueDate)) < startOfDay(new Date());
+  return startOfDay(parseLocalDate(task.dueDate)) < startOfDay(new Date());
 }
 
 /** Human-readable due/overdue/completed label matching the design's card copy. */
@@ -32,7 +51,8 @@ export function getDueDateLabel(task: Task): string {
   }
 
   const dayDiff = Math.round(
-    (startOfDay(new Date(task.dueDate)).getTime() - startOfDay(new Date()).getTime()) / 86_400_000,
+    (startOfDay(parseLocalDate(task.dueDate)).getTime() - startOfDay(new Date()).getTime()) /
+      86_400_000,
   );
 
   if (dayDiff < 0) {

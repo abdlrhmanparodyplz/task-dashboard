@@ -64,7 +64,13 @@ describe('TaskBoardComponent', () => {
     fixture.detectChanges();
   }
 
-  afterEach(() => filter?.reset());
+  afterEach(() => {
+    filter?.reset();
+    // provideMockStore's `selectors` option overrides the *shared, module-level*
+    // selector functions in place — without resetting, that override leaks into
+    // every other spec file in the same Karma run that imports the same selector.
+    store?.resetSelectors();
+  });
 
   it('dispatches loadTasks on init', () => {
     setup({});
