@@ -17,6 +17,7 @@ A production-style Task Management Dashboard built for the Senior Front End (Ang
 - [State management](#state-management-signals--ngrx-hybrid)
 - [Mock backend / data layer](#mock-backend--data-layer)
 - [Testing strategy](#testing-strategy)
+- [Continuous integration](#continuous-integration)
 - [Performance](#performance)
 - [Accessibility & responsive design](#accessibility--responsive-design)
 - [Known limitations & future improvements](#known-limitations--future-improvements)
@@ -133,6 +134,10 @@ What's covered, by layer:
 
 One non-obvious gotcha worth flagging for anyone extending this suite: `provideMockStore({ selectors: [...] })` overrides the *shared, module-level* NgRx selector exports in place. Every spec file that uses it must call `store.resetSelectors()` in `afterEach` — otherwise the override leaks into unrelated spec files bundled into the same Karma run (this bit us once; see the git history).
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every push and pull request against `main`: install → lint → Prettier format check → the full unit test suite with coverage (headless Chrome) → coverage report uploaded as a build artifact → production build. Any of these failing fails the build.
+
 ## Performance
 
 - `ChangeDetectionStrategy.OnPush` on every component (there are no exceptions).
@@ -151,7 +156,6 @@ One area flagged rather than silently left as-is: a couple of lazy chunks (`shel
 
 ## Known limitations & future improvements
 
-- **No CI pipeline yet** — planned as the next step after this README (GitHub Actions running lint + the full test suite with coverage on every PR).
 - **No Docker/i18n** — scoped out deliberately to keep effort concentrated on the core functionality, architecture, and test coverage that make up the bulk of the evaluation criteria, rather than spreading thin across every bonus item.
 - **Drag-and-drop** is implemented with standard Angular CDK primitives and structurally exercised in `TaskBoardComponent`'s tests (dispatch assertions on drop events), but wasn't separately verified with a real synthetic pointer-drag sequence in an automated test — CDK's drag simulation in headless test environments is notoriously fiddly, and the actual interaction was manually verified in a running browser instead.
 - **Only one screen existed in the Figma file** (the dashboard/board overview). Analytics, Team, Calendar, and Settings pages were designed to match the existing visual language (colors, spacing, card styling) rather than against a provided mockup, since none existed for those routes.
